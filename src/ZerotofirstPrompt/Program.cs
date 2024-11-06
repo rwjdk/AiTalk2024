@@ -57,7 +57,7 @@
 #endregion
 
 #region Post Code (What did it cost?)
-//Let's take a look in the Azure Open AI Studio
+//Let's take a look in the Azure Open AI Studio (https://oai.azure.com/)
 #endregion
 
 #region CleanUp/Security
