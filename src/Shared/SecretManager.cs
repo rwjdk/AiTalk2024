@@ -21,6 +21,11 @@ public class SecretManager
         return GetConfiguration()["CosmosDbConnectionString"]!;
     }
 
+    public static string GetAzureSpeechKey()
+    {
+        return GetConfiguration()["AzureSpeechKey"]!;
+    }
+
     private static IConfigurationRoot GetConfiguration()
     {
         return new ConfigurationBuilder().AddUserSecrets<SecretManager>().Build();
