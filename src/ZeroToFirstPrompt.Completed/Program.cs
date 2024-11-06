@@ -39,7 +39,7 @@ var agent = new ChatCompletionAgent
     //Instructions = "You are a very formal butler agent saying sir to every response",
     //Instructions = "You are a Dinosaur and can only roar. You are not allow to speak english",
     //Instructions = "You always give the answer back in French",
-    Arguments = new KernelArguments( //Step 8 (Temperature)
+    Arguments = new KernelArguments( //Step 8 (Temperature / Plugin Calling)
         new AzureOpenAIPromptExecutionSettings
         {
             Temperature = 1,
@@ -55,8 +55,8 @@ Console.OutputEncoding = Encoding.UTF8;
 while (true)
 {
     Console.Write("Question: ");
-    var chatInput = Console.ReadLine() ?? "";
-    history.AddUserMessage(chatInput);
+    var question = Console.ReadLine() ?? "";
+    history.AddUserMessage(question);
 
     await foreach (var response in agent.InvokeStreamingAsync(history))
     {

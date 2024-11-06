@@ -10,6 +10,17 @@ public class SecretManager
         return new AzureOpenAiCredentials(configuration["AzureOpenAiEndpoint"]!, configuration["AzureOpenAiKey"]!);
     }
 
+    public static TrelloCredentials GetTrelloCredentials()
+    {
+        var configuration = GetConfiguration();
+        return new TrelloCredentials(configuration["TrelloApiKey"]!, configuration["TrelloToken"]!);
+    }
+
+    public static string GetCosmosDbConnectionString()
+    {
+        return GetConfiguration()["CosmosDbConnectionString"]!;
+    }
+
     private static IConfigurationRoot GetConfiguration()
     {
         return new ConfigurationBuilder().AddUserSecrets<SecretManager>().Build();

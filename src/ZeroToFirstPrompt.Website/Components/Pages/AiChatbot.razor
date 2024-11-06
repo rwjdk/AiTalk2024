@@ -1,0 +1,16 @@
+﻿@page "/AiChatbot"
+<h3>AI Chatbot</h3>
+
+<div>
+    <div style="height: 80vh; overflow-y: scroll; font-size: 16px">
+        @foreach (var item in _conversation.Items)
+        {
+            <div style="text-align: end; padding: 10px; font-weight: bold">Q: @item.Question</div>
+            <div style="padding: 10px">@((MarkupString)Markdig.Markdown.ToHtml(item.Answer))</div>
+        }
+    </div>
+    <div>
+        <input type="text" @bind-value="@_question" style="width: 75%;" />
+        <input type="button" @onclick="AskQuestion" style="width: 24%" value="Send Request" />
+    </div>
+</div>

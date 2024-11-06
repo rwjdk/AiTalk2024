@@ -1,0 +1,11 @@
+Add 10 cards with 'ip lipsum' random names in random lists with 0 to 3 random labels
+
+How many Cards are there?
+
+Create a card called 'Hello ANUG' with the yellow label in list 'In Progress' that are due tommorrow
+
+move the cards that have a '1' in its card name to Done
+
+Create 5 new random cards
+
+Move all cards in the 'Todo' list to the 'In Progress' list (do not touch the cards already there), add the Label with the 'red' color to them and give the cards today's date as Start date... Then Take all the cards in the 'Backlog' list and move them to the 'Todo' list.
