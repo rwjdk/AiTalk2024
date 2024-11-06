@@ -5,5 +5,5 @@
 ## Learn More
 - [MS Learn](https://learn.microsoft.com/en-us/semantic-kernel/overview/)
 - [GitHub Repo](https://github.com/microsoft/semantic-kernel)
-- [Community Resources](https://github.com/microsoft/semantic-kernel/blob/main/COMMUNITY.md)
+- [Community Resources / Office Hours](https://github.com/microsoft/semantic-kernel/blob/main/COMMUNITY.md)
 
