@@ -49,6 +49,7 @@ while (true)
     var speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
     SpeechRecognitionResult result = await speechRecognizer.RecognizeOnceAsync();
     var question = result.Text;
+    Console.WriteLine("Question: "+question);
     if (string.IsNullOrWhiteSpace(question))
     {
         continue;
@@ -66,4 +67,5 @@ while (true)
 
     Console.WriteLine();
     Console.WriteLine("*********************");
+    Console.WriteLine();
 }

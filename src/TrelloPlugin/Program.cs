@@ -82,4 +82,5 @@ while (true)
     history.Clear();
     Console.WriteLine();
     Console.WriteLine("*********************");
+    Console.WriteLine();
 }
