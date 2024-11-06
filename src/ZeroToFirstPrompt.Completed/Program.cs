@@ -6,14 +6,16 @@ using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using Microsoft.SemanticKernel.Plugins.Core;
+using Shared;
 
 #pragma warning disable SKEXP0001
 #pragma warning disable SKEXP0110
 #pragma warning disable SKEXP0050
 
+AzureOpenAiCredentials azureOpenAiCredentials = SecretManager.GetAzureOpenAiCredentials();
 //Step 3:
 var builder = Kernel.CreateBuilder();
-builder.AddAzureOpenAIChatCompletion("gpt-4o", "TODO:ENDPOINT", "TODO:APIKEY");
+builder.AddAzureOpenAIChatCompletion("gpt-4o", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey);
 //builder.Services.AddLogging(x => x.AddConsole().SetMinimumLevel(LogLevel.Trace)); //Step 8 (Logging)
 Kernel kernel = builder.Build();
 

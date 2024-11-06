@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroToFirstPrompt.Completed
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroToFirstPrompt", "src\ZerotofirstPrompt\ZeroToFirstPrompt.csproj", "{44CD282D-0115-4A79-99D5-D06AD92671EF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{29B970EF-FE4A-4AE1-AA41-99FF51270ACB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared.csproj", "{98B141F3-3F6B-4A30-9EA2-278F3B319A89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,10 @@ Global
 		{44CD282D-0115-4A79-99D5-D06AD92671EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44CD282D-0115-4A79-99D5-D06AD92671EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44CD282D-0115-4A79-99D5-D06AD92671EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98B141F3-3F6B-4A30-9EA2-278F3B319A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98B141F3-3F6B-4A30-9EA2-278F3B319A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98B141F3-3F6B-4A30-9EA2-278F3B319A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98B141F3-3F6B-4A30-9EA2-278F3B319A89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{57EC321C-ACAA-41A7-9CB7-392A62CF26FF} = {28B5265C-7613-4D95-A084-E783A8824F1E}
 		{44CD282D-0115-4A79-99D5-D06AD92671EF} = {28B5265C-7613-4D95-A084-E783A8824F1E}
+		{98B141F3-3F6B-4A30-9EA2-278F3B319A89} = {29B970EF-FE4A-4AE1-AA41-99FF51270ACB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {13268E60-FAD8-4BE0-8711-4A131E7DDCCF}
