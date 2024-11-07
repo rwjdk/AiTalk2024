@@ -18,7 +18,6 @@ using Shared;
 AzureOpenAiCredentials azureOpenAiCredentials = SecretManager.GetAzureOpenAiCredentials();
 var builder = Kernel.CreateBuilder();
 builder.AddAzureOpenAIChatCompletion("gpt-4o", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey);
-builder.AddAzureOpenAIAudioToText("whisper", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey); //NEW <<<<<<<<<<<<<<<<<<<
 Kernel kernel = builder.Build();
 
 var agent = new ChatCompletionAgent
@@ -44,7 +43,7 @@ while (true)
     Console.ReadKey();
     Console.WriteLine("Listening for your question...");
 
-    speechConfig.SpeechRecognitionLanguage = "en-US";
+    speechConfig.SpeechRecognitionLanguage = "da-DK";
     var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
     var speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
     SpeechRecognitionResult result = await speechRecognizer.RecognizeOnceAsync();
