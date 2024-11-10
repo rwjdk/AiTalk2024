@@ -25,11 +25,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02. InteractionWithOwnData-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloPlugin", "src\HelloPlugin\HelloPlugin.csproj", "{085201D2-E5C7-4F05-B24D-B4C1CED3B265}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrelloPlugin", "src\TrelloPlugin\TrelloPlugin.csproj", "{BFF43F9D-BA23-4A09-A151-A23F9DB4CA58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrelloPlugin", "src\TrelloPlugin\TrelloPlugin.csproj", "{BFF43F9D-BA23-4A09-A151-A23F9DB4CA58}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03. Bonus", "03. Bonus", "{DEED561D-16C2-4907-8F2A-ED14C3489869}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeakToYourAi", "src\SpeakToYourAi\SpeakToYourAi.csproj", "{6879F512-DC9E-4E8F-ADDC-9A5B16F4177A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeakToYourAi", "src\SpeakToYourAi\SpeakToYourAi.csproj", "{6879F512-DC9E-4E8F-ADDC-9A5B16F4177A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentGroupChat", "src\AgentGroupChat\AgentGroupChat.csproj", "{8201D7CF-D2D8-4197-A014-8F1563127644}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{6879F512-DC9E-4E8F-ADDC-9A5B16F4177A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6879F512-DC9E-4E8F-ADDC-9A5B16F4177A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6879F512-DC9E-4E8F-ADDC-9A5B16F4177A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8201D7CF-D2D8-4197-A014-8F1563127644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8201D7CF-D2D8-4197-A014-8F1563127644}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8201D7CF-D2D8-4197-A014-8F1563127644}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8201D7CF-D2D8-4197-A014-8F1563127644}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{085201D2-E5C7-4F05-B24D-B4C1CED3B265} = {286B5912-F155-4094-A1F5-2175EFB6CF94}
 		{BFF43F9D-BA23-4A09-A151-A23F9DB4CA58} = {286B5912-F155-4094-A1F5-2175EFB6CF94}
 		{6879F512-DC9E-4E8F-ADDC-9A5B16F4177A} = {DEED561D-16C2-4907-8F2A-ED14C3489869}
+		{8201D7CF-D2D8-4197-A014-8F1563127644} = {DEED561D-16C2-4907-8F2A-ED14C3489869}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {13268E60-FAD8-4BE0-8711-4A131E7DDCCF}
