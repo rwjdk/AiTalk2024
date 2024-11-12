@@ -82,6 +82,7 @@ async Task LessEfficientRagSample()
 
         Console.WriteLine();
         Console.WriteLine("*********************");
+        Console.WriteLine();
     }
 }
 
@@ -131,5 +132,6 @@ async Task MoreEfficientRagSample()
         await agent.ReduceAsync(history); //NEW <<<<<<<<<<<<<<<<<<<<<<<
         Console.WriteLine();
         Console.WriteLine("*********************");
+        Console.WriteLine();
     }
 }

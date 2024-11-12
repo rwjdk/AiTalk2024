@@ -19,7 +19,7 @@ using TrelloPlugin.Models;
 AzureOpenAiCredentials azureOpenAiCredentials = SecretManager.GetAzureOpenAiCredentials();
 var builder = Kernel.CreateBuilder();
 builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey);
-//builder.Services.AddLogging(x => x.AddConsole().SetMinimumLevel(LogLevel.Trace));
+builder.Services.AddLogging(x => x.AddConsole().SetMinimumLevel(LogLevel.Trace));
 Kernel kernel = builder.Build();
 
 TrelloCredentials trelloCredentials = SecretManager.GetTrelloCredentials();
@@ -27,6 +27,8 @@ TrelloCredentials trelloCredentials = SecretManager.GetTrelloCredentials();
 TrelloClient trelloClient = new TrelloClient(trelloCredentials.ApiKey, trelloCredentials.Token);
 
 Member currentUser = await trelloClient.GetTokenMemberAsync();
+
+kernel.ImportPluginFromType<TimePlugin>();
 
 kernel.ImportPluginFromObject(new TrelloInteractionPlugin(
     trelloClient: trelloClient,
@@ -82,4 +84,5 @@ while (true)
     history.Clear();
     Console.WriteLine();
     Console.WriteLine("*********************");
+    Console.WriteLine();
 }

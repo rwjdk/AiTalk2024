@@ -57,4 +57,5 @@ while (true)
 
     Console.WriteLine();
     Console.WriteLine("*********************");
+    Console.WriteLine();
 }
