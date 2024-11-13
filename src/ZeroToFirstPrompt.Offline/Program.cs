@@ -5,10 +5,9 @@ using Microsoft.SemanticKernel.ChatCompletion;
 #pragma warning disable SKEXP0070
 #pragma warning disable SKEXP0110
 
-//Get Models: https://ollama.com/library
 
 var builder = Kernel.CreateBuilder();
-builder.AddOllamaChatCompletion("llama3.1", new Uri("http://localhost:11434"));
+
 
 Kernel kernel = builder.Build();
 var agent = new ChatCompletionAgent

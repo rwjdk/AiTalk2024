@@ -1,20 +1,25 @@
 ﻿using System.Text;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using Shared;
 
 #pragma warning disable SKEXP0001
 #pragma warning disable SKEXP0110
 #pragma warning disable SKEXP0050
+#pragma warning disable SKEXP0070
 
 Secrets secrets = SecretManager.GetSecrets();
 //Step 3:
 var builder = Kernel.CreateBuilder();
+//Step 3 - Azure OpenAI
 builder.AddAzureOpenAIChatCompletion("gpt-4o", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
+
+//Step 8a - Google Gemini
+//builder.AddGoogleAIGeminiChatCompletion("gemini-1.5-flash", secrets.GoogleGeminiApiKey);
+//Step 8b - Offline
+//builder.AddOllamaChatCompletion("llama3.1", new Uri("http://localhost:11434")); //Get Models: https://ollama.com/library
+
 Kernel kernel = builder.Build();
 
 //Step 4:
@@ -35,11 +40,6 @@ var agent = new ChatCompletionAgent
     //Instructions = "You are a very formal butler agent saying sir to every response",
     //Instructions = "You are a Dinosaur and can only roar. You are not allow to speak english",
     //Instructions = "You always give the answer back in French",
-    Arguments = new KernelArguments( //Step 8 (Temperature)
-        new AzureOpenAIPromptExecutionSettings
-        {
-            Temperature = 1
-        })
 };
 
 //Step 6:
