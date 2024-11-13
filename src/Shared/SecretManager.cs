@@ -2,32 +2,30 @@
 
 namespace Shared;
 
+public record Secrets(
+    string AzureOpenAiEndpoint,
+    string AzureOpenAiApiKey,
+    string AzureSpeechApiKey,
+    string CosmosDbConnectionString,
+    string TrelloApiKey,
+    string TrelloToken);
+
 public class SecretManager
 {
-    public static AzureOpenAiCredentials GetAzureOpenAiCredentials()
-    {
-        var configuration = GetConfiguration();
-        return new AzureOpenAiCredentials(configuration["AzureOpenAiEndpoint"]!, configuration["AzureOpenAiKey"]!);
-    }
+    private static readonly IConfigurationRoot Configuration =
+        new ConfigurationBuilder()
+            .AddUserSecrets<SecretManager>()
+            .Build();
 
-    public static TrelloCredentials GetTrelloCredentials()
+    public static Secrets GetSecrets()
     {
-        var configuration = GetConfiguration();
-        return new TrelloCredentials(configuration["TrelloApiKey"]!, configuration["TrelloToken"]!);
-    }
-
-    public static string GetCosmosDbConnectionString()
-    {
-        return GetConfiguration()["CosmosDbConnectionString"]!;
-    }
-
-    public static string GetAzureSpeechKey()
-    {
-        return GetConfiguration()["AzureSpeechKey"]!;
-    }
-
-    private static IConfigurationRoot GetConfiguration()
-    {
-        return new ConfigurationBuilder().AddUserSecrets<SecretManager>().Build();
+        return new Secrets(
+            Configuration["AzureOpenAiEndpoint"]!,
+            Configuration["AzureOpenAiKey"]!,
+            Configuration["AzureSpeechKey"]!,
+            Configuration["CosmosDbConnectionString"]!,
+            Configuration["TrelloApiKey"]!,
+            Configuration["TrelloToken"]!
+        );
     }
 }

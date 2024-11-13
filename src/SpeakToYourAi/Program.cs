@@ -1,13 +1,10 @@
 ﻿using System.Text;
 using Microsoft.CognitiveServices.Speech.Audio;
 using Microsoft.CognitiveServices.Speech;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
-using Microsoft.SemanticKernel.Plugins.Core;
 using Shared;
 
 #pragma warning disable SKEXP0001
@@ -15,9 +12,9 @@ using Shared;
 #pragma warning disable SKEXP0110
 #pragma warning disable SKEXP0050
 
-AzureOpenAiCredentials azureOpenAiCredentials = SecretManager.GetAzureOpenAiCredentials();
+Secrets secrets = SecretManager.GetSecrets();
 var builder = Kernel.CreateBuilder();
-builder.AddAzureOpenAIChatCompletion("gpt-4o", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey);
+builder.AddAzureOpenAIChatCompletion("gpt-4o", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
 Kernel kernel = builder.Build();
 
 var agent = new ChatCompletionAgent
@@ -35,8 +32,7 @@ var agent = new ChatCompletionAgent
 var history = new ChatHistory();
 Console.OutputEncoding = Encoding.UTF8;
 
-var azureSpeechKey = SecretManager.GetAzureSpeechKey();
-var speechConfig = SpeechConfig.FromSubscription(azureSpeechKey, "swedencentral");
+var speechConfig = SpeechConfig.FromSubscription(secrets.AzureSpeechApiKey, "swedencentral");
 while (true)
 {
     Console.WriteLine("Press any key to ask you question...");
@@ -48,7 +44,7 @@ while (true)
     var speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
     SpeechRecognitionResult result = await speechRecognizer.RecognizeOnceAsync();
     var question = result.Text;
-    Console.WriteLine("Question: "+question);
+    Console.WriteLine("Question: " + question);
     if (string.IsNullOrWhiteSpace(question))
     {
         continue;

@@ -16,15 +16,13 @@ using TrelloPlugin.Models;
 #pragma warning disable SKEXP0110
 #pragma warning disable SKEXP0050
 
-AzureOpenAiCredentials azureOpenAiCredentials = SecretManager.GetAzureOpenAiCredentials();
+Secrets secrets = SecretManager.GetSecrets();
 var builder = Kernel.CreateBuilder();
-builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey);
+builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
 builder.Services.AddLogging(x => x.AddConsole().SetMinimumLevel(LogLevel.Trace));
 Kernel kernel = builder.Build();
 
-TrelloCredentials trelloCredentials = SecretManager.GetTrelloCredentials();
-
-TrelloClient trelloClient = new TrelloClient(trelloCredentials.ApiKey, trelloCredentials.Token);
+TrelloClient trelloClient = new TrelloClient(secrets.TrelloApiKey, secrets.TrelloToken);
 
 Member currentUser = await trelloClient.GetTokenMemberAsync();
 

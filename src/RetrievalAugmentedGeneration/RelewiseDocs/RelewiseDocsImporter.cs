@@ -67,16 +67,6 @@ public class RelewiseDocsImporter(string collection, ISemanticTextMemory memory)
                 {
                     //Regular Content
                     string lineContent = line;
-                    MatchCollection imageMatches = Regex.Matches(lineContent, @"\.\.\/(?'file'assets\/images\/(?'name'[a-z-_0-9]*\.png))");
-                    foreach (Match imageMatch in imageMatches)
-                    {
-                        string path = $"{root}\\{imageMatch.Groups["file"].Value.Replace("/", "\\")}";
-                        if (File.Exists(path))
-                        {
-                            //Todo - find how they make the URL Transformation
-                        }
-                    }
-
                     sectionContent += lineContent + Environment.NewLine;
                 }
             }

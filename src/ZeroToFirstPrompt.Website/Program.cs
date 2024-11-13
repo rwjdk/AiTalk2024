@@ -1,6 +1,5 @@
 using Microsoft.SemanticKernel;
 using Shared;
-using ZeroToFirstPrompt.Website.Components;
 using ZeroToFirstPrompt.Website.Components.Pages;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,10 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+Secrets secrets = SecretManager.GetSecrets();
 //AI: BEGIN
-AzureOpenAiCredentials azureOpenAiCredentials = SecretManager.GetAzureOpenAiCredentials();
 builder.Services.AddKernel();
-builder.Services.AddAzureOpenAIChatCompletion("gpt-4o", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey);
+builder.Services.AddAzureOpenAIChatCompletion("gpt-4o", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
 //AI: END
 
 var app = builder.Build();

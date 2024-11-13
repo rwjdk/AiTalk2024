@@ -17,16 +17,16 @@ using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 #pragma warning disable SKEXP0050
 #pragma warning disable SKEXP0110
 #pragma warning disable SKEXP0020
-AzureOpenAiCredentials azureOpenAiCredentials = SecretManager.GetAzureOpenAiCredentials();
+Secrets secrets = SecretManager.GetSecrets();
 var builder = Kernel.CreateBuilder();
-builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey); //Smaller model
-builder.AddAzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey); //New!
+builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey); //Smaller model
+builder.AddAzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey); //New!
 Kernel kernel = builder.Build();
 
 
 ISemanticTextMemory semanticTextMemory = new MemoryBuilder()
     .WithTextEmbeddingGeneration(kernel.GetRequiredService<ITextEmbeddingGenerationService>())
-    .WithMemoryStore(new AzureCosmosDBNoSQLMemoryStore(SecretManager.GetCosmosDbConnectionString(), "relewise", 1536, VectorDataType.Float32, VectorIndexType.DiskANN))
+    .WithMemoryStore(new AzureCosmosDBNoSQLMemoryStore(secrets.CosmosDbConnectionString, "relewise", 1536, VectorDataType.Float32, VectorIndexType.DiskANN))
     .Build();
 
 
@@ -37,7 +37,7 @@ if (importData)
     await new RelewiseDocsImporter(vectorStoreCollection, semanticTextMemory).Import();
 }
 
-//await InefficientRagSample();
+//await LessEfficientRagSample();
 await MoreEfficientRagSample();
 
 

@@ -4,6 +4,7 @@ namespace HelloPlugin;
 
 public class MyFirstPlugin
 {
+    //Todo - Info + Actions (File Interactions)
     [KernelFunction("get_anug_history")]
     public string GetHistory()
     {
@@ -22,7 +23,7 @@ public class MyFirstPlugin
                As of 2024 it have over 1000 members
 
                Today it have the following Core Members that are in charge of organizing events
-               - Kistoffer Strube
+               - Kristoffer Strube
                - Mogens Heller Grabe 
                - Henrik Lykke Nielsen
                - Michael Skarum

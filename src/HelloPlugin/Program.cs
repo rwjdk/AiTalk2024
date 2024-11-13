@@ -13,12 +13,13 @@ using Shared;
 #pragma warning disable SKEXP0110
 #pragma warning disable SKEXP0050
 
-AzureOpenAiCredentials azureOpenAiCredentials = SecretManager.GetAzureOpenAiCredentials();
+Secrets secrets = SecretManager.GetSecrets();
 var builder = Kernel.CreateBuilder();
-builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey);
+builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
 //builder.Services.AddLogging(x => x.AddConsole().SetMinimumLevel(LogLevel.Trace));
 Kernel kernel = builder.Build();
 
+kernel.ImportPluginFromType<TimePlugin>();
 kernel.ImportPluginFromObject(new MyFirstPlugin());
 
 var agent = new ChatCompletionAgent

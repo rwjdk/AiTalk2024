@@ -9,10 +9,9 @@ using Shared;
 #pragma warning disable SKEXP0110
 #pragma warning disable SKEXP0050
 
-AzureOpenAiCredentials azureOpenAiCredentials = SecretManager.GetAzureOpenAiCredentials();
+Secrets secrets = SecretManager.GetSecrets();
 var builder = Kernel.CreateBuilder();
-builder.AddAzureOpenAIChatCompletion("gpt-4o", azureOpenAiCredentials.Endpoint, azureOpenAiCredentials.ApiKey);
-//builder.Services.AddLogging(x => x.AddConsole().SetMinimumLevel(LogLevel.Trace));
+builder.AddAzureOpenAIChatCompletion("gpt-4o", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
 Kernel kernel = builder.Build();
 var storyTeller = new ChatCompletionAgent
 {
@@ -61,6 +60,7 @@ await foreach (var chunk in response)
 {
     if (speaker != chunk.AuthorName)
     {
+        Console.ReadKey();
         Console.WriteLine();
         Console.WriteLine();
         Console.WriteLine("***");

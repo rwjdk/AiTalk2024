@@ -4,11 +4,11 @@ using Azure.AI.OpenAI;
 using Microsoft.Extensions.AI;
 using Shared;
 
-var azureOpenAiCredentials = SecretManager.GetAzureOpenAiCredentials();
+Secrets secrets = SecretManager.GetSecrets();
 
 AzureOpenAIClient azureOpenAiClient = new AzureOpenAIClient(
-    new Uri(azureOpenAiCredentials.Endpoint),
-    new ApiKeyCredential(azureOpenAiCredentials.ApiKey));
+    new Uri(secrets.AzureOpenAiEndpoint),
+    new ApiKeyCredential(secrets.AzureOpenAiApiKey));
 
 IChatClient client = azureOpenAiClient.AsChatClient(modelId: "gpt-4o-mini");
 Console.OutputEncoding = Encoding.UTF8;
