@@ -27,8 +27,9 @@ builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", secrets.AzureOpenAiEndpoint,
 //builder.Services.AddLogging(x => x.AddConsole().SetMinimumLevel(LogLevel.Trace));
 Kernel kernel = builder.Build();
 
+var history = new ChatHistory();
 kernel.ImportPluginFromType<TimePlugin>();
-kernel.ImportPluginFromObject(new MyFirstPlugin(sampleRoot));
+kernel.ImportPluginFromObject(new MyFirstPlugin(sampleRoot, history));
 
 var agent = new ChatCompletionAgent
 {
@@ -45,7 +46,7 @@ var agent = new ChatCompletionAgent
         })
 };
 
-var history = new ChatHistory();
+
 
 Console.OutputEncoding = Encoding.UTF8;
 while (true)

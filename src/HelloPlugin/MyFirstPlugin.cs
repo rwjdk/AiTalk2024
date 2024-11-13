@@ -1,8 +1,9 @@
 ﻿using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace HelloPlugin;
 
-public class MyFirstPlugin(string rootFolder)
+public class MyFirstPlugin(string rootFolder, ChatHistory history)
 {
     [KernelFunction("get_root_folder")]
     public string GetRootFolder()
@@ -67,5 +68,17 @@ public class MyFirstPlugin(string rootFolder)
         {
             throw new Exception("No you don't!");
         }
+    }
+
+    [KernelFunction("forget_history")]
+    public void Forget()
+    {
+        history.Clear();
+    }
+
+    [KernelFunction("start_over")]
+    public void Forget2()
+    {
+        history.Clear();
     }
 }
