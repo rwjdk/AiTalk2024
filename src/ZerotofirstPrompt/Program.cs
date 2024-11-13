@@ -59,9 +59,7 @@ const string azureOpenAiApiKey = ""; //Todo - Should not be directly in real cod
 
 #region Step 8
 
-//Let's Tweak various things
-//- Temperature (Agent argument execution settings) Range: 0-2 
-//- Let's add logging (Require Nuget: Microsoft.Extensions.Logging.Console)
+//What would it take to use another Model? (Demo in complete Example)?
 
 #endregion
 
