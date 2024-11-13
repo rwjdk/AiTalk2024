@@ -14,13 +14,9 @@ IChatClient client = azureOpenAiClient.AsChatClient(modelId: "gpt-4o-mini");
 Console.OutputEncoding = Encoding.UTF8;
 while (true)
 {
-
     Console.Write("Question: ");
     var question = Console.ReadLine() ?? "";
-    await foreach (var update in client.CompleteStreamingAsync(question, new ChatOptions
-                   {
-                       ToolMode = ChatToolMode.Auto
-                   }))
+    await foreach (var update in client.CompleteStreamingAsync(question))
     {
         Console.Write(update.Text);
     }
