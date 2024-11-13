@@ -37,101 +37,49 @@ if (importData)
     await new RelewiseDocsImporter(vectorStoreCollection, semanticTextMemory).Import();
 }
 
-//await LessEfficientRagSample();
-await MoreEfficientRagSample();
+kernel.ImportPluginFromObject(new RelewiseDocsPlugin(semanticTextMemory, vectorStoreCollection)); //NEW <<<<<<<<<<<<<<<<<<<<<<<
 
-
-async Task LessEfficientRagSample()
+var agent = new ChatCompletionAgent
 {
-    var agent = new ChatCompletionAgent
-    {
-        Name = "RelewiseDocsAgent",
-        Instructions = """
-                       You are a Friendly Relewise Agent that can exchange pleasantries and can answer questions about how to use the Relewise API via its documentation.
-                       Please only used information from memory plugins but please ask all of them for data
-                       Please include all 'More info links' used at the bottom of the answer
-                       Please only answer questions about Relewise. If you are ask about anything else please say 'I can only answer questions about Relewise' and if you do not know answer 'I do not know 😔'
-                       """,
-        Kernel = kernel
-    };
-
-    var history = new ChatHistory();
-
-    Console.OutputEncoding = Encoding.UTF8;
-    while (true)
-    {
-        Console.Write("Question: ");
-        var question = Console.ReadLine() ?? "";
-
-        //Ask Memory to Augment Prompt before question (AKA Inefficient way)
-        var memories = semanticTextMemory.SearchAsync(vectorStoreCollection, question, 3, 0.75);
-        await foreach (var memory in memories)
+    Name = "RelewiseDocsAgent",
+    Instructions = """
+                   You are a Friendly Relewise Agent that can exchange pleasantries and can answer questions about how to use the Relewise API via its documentation.
+                   Please only used information from memory plugins but please ask all of them for data
+                   Please include all 'More info links' used at the bottom of the answer
+                   Please only answer questions about Relewise. If you are ask about anything else please say 'I can only answer questions about Relewise' and if you do not know answer 'I do not know 😔'
+                   """,
+    Kernel = kernel,
+    HistoryReducer = new ChatHistoryTruncationReducer(1), //NEW <<<<<<<<<<<<<<<<<<<<<<<
+    Arguments = new KernelArguments
+    (
+        new AzureOpenAIPromptExecutionSettings
         {
-            history.AddSystemMessage(memory.Metadata.Text + $" [More Info link: {memory.Metadata.AdditionalMetadata}]");
+            FunctionChoiceBehavior = FunctionChoiceBehavior.Auto() //NEW <<<<<<<<<<<<<<<<<<<<<<<
         }
+    )
+};
 
-        history.AddUserMessage(question);
+var history = new ChatHistory();
 
-        await foreach (var response in agent.InvokeStreamingAsync(history))
-        {
-            foreach (var content in response.Content ?? "")
-            {
-                Console.Write(content);
-            }
-        }
-
-        Console.WriteLine();
-        Console.WriteLine("*********************");
-        Console.WriteLine();
-    }
-}
-
-async Task MoreEfficientRagSample()
+Console.OutputEncoding = Encoding.UTF8;
+while (true)
 {
-    kernel.ImportPluginFromObject(new RelewiseDocsPlugin(semanticTextMemory, vectorStoreCollection)); //NEW <<<<<<<<<<<<<<<<<<<<<<<
+    Console.Write("Question: ");
+    var question = Console.ReadLine() ?? "";
 
-    var agent = new ChatCompletionAgent
+    history.AddUserMessage(question);
+
+    await foreach (var response in agent.InvokeStreamingAsync(history))
     {
-        Name = "RelewiseDocsAgent",
-        Instructions = """
-                       You are a Friendly Relewise Agent that can exchange pleasantries and can answer questions about how to use the Relewise API via its documentation.
-                       Please only used information from memory plugins but please ask all of them for data
-                       Please include all 'More info links' used at the bottom of the answer
-                       Please only answer questions about Relewise. If you are ask about anything else please say 'I can only answer questions about Relewise' and if you do not know answer 'I do not know 😔'
-                       """,
-        Kernel = kernel,
-        HistoryReducer = new ChatHistoryTruncationReducer(1), //NEW <<<<<<<<<<<<<<<<<<<<<<<
-        Arguments = new KernelArguments
-        (
-            new AzureOpenAIPromptExecutionSettings
-            {
-                FunctionChoiceBehavior = FunctionChoiceBehavior.Auto() //NEW <<<<<<<<<<<<<<<<<<<<<<<
-            }
-        )
-    };
-
-    var history = new ChatHistory();
-
-    Console.OutputEncoding = Encoding.UTF8;
-    while (true)
-    {
-        Console.Write("Question: ");
-        var question = Console.ReadLine() ?? "";
-
-        history.AddUserMessage(question);
-
-        await foreach (var response in agent.InvokeStreamingAsync(history))
+        foreach (var content in response.Content ?? "")
         {
-            foreach (var content in response.Content ?? "")
-            {
-                Console.Write(content);
-            }
+            Console.Write(content);
         }
-
-        history.RemoveToolCalls(); //NEW <<<<<<<<<<<<<<<<<<<<<<<
-        await agent.ReduceAsync(history); //NEW <<<<<<<<<<<<<<<<<<<<<<<
-        Console.WriteLine();
-        Console.WriteLine("*********************");
-        Console.WriteLine();
     }
+
+    history.RemoveToolCalls(); //NEW <<<<<<<<<<<<<<<<<<<<<<<
+    await agent.ReduceAsync(history); //NEW <<<<<<<<<<<<<<<<<<<<<<<
+    Console.WriteLine();
+    Console.WriteLine("*********************");
+    Console.WriteLine();
 }

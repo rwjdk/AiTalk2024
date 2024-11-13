@@ -1,0 +1,9 @@
+﻿Create 10 random txt files. Each filename should be the name of a fruit and the content should explain the fruit
+
+How many files are there?
+
+Move all files into sub-folders based on the color of the fruit they represent
+
+How many files are there?
+
+No, check again... Double-check the number after you have each folder-count

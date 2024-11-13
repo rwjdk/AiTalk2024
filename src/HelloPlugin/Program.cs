@@ -13,24 +13,30 @@ using Shared;
 #pragma warning disable SKEXP0110
 #pragma warning disable SKEXP0050
 
+//Files Sample Setup
+const string sampleRoot = "C:\\HelloPlugin";
+if (!Directory.Exists(sampleRoot))
+{
+    Directory.CreateDirectory(sampleRoot);
+}
+
 Secrets secrets = SecretManager.GetSecrets();
 var builder = Kernel.CreateBuilder();
+builder.Services.AddSingleton<IAutoFunctionInvocationFilter, AutoInvocationFilter>();
 builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
 //builder.Services.AddLogging(x => x.AddConsole().SetMinimumLevel(LogLevel.Trace));
 Kernel kernel = builder.Build();
 
 kernel.ImportPluginFromType<TimePlugin>();
-kernel.ImportPluginFromObject(new MyFirstPlugin());
+kernel.ImportPluginFromObject(new MyFirstPlugin(sampleRoot));
 
 var agent = new ChatCompletionAgent
 {
-    Name = "MyAgent",
+    Name = "MyFilesAgent",
     Kernel = kernel,
-    Instructions = """
-                   You are a friendly AI Agent that know about Aarhus .NET UserGroup, also known. as ANUG. 
-                   Do not use you general knowledge, but instead 'get_anug_history' when answering questions
-                   Keep the responses short and concise",
-                   """,
+    Instructions = $"You are File Manager that can create and list files and folders. " +
+                   $"When you create files and folder you need to give the full path based" +
+                   $" on this root folder: {sampleRoot}",
     Arguments = new KernelArguments(
         new AzureOpenAIPromptExecutionSettings
         {
@@ -44,7 +50,7 @@ var history = new ChatHistory();
 Console.OutputEncoding = Encoding.UTF8;
 while (true)
 {
-    Console.Write("Question: ");
+    Console.Write("> ");
     var question = Console.ReadLine() ?? "";
     history.AddUserMessage(question);
 

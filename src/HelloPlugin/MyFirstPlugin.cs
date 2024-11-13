@@ -2,34 +2,70 @@
 
 namespace HelloPlugin;
 
-public class MyFirstPlugin
+public class MyFirstPlugin(string rootFolder)
 {
-    //Todo - Info + Actions (File Interactions)
-    [KernelFunction("get_anug_history")]
-    public string GetHistory()
+    [KernelFunction("get_root_folder")]
+    public string GetRootFolder()
     {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Plugin Function 'GetHistory' was called");
-        Console.ForegroundColor = ConsoleColor.White;
-        return """
-               Aarhus .NET User Group (ANUG) is a community in Aarhus, Denmark, 
-               for professionals and enthusiasts interested in .NET development. 
-               ANUG organizes regular meetups, talks, and workshops focused on .NET technologies, 
-               software development practices, and related topics. The group provides a platform for networking, 
-               knowledge sharing, and staying updated on the latest trends in the .NET ecosystem."
+        return rootFolder;
+    }
 
-               The group was established in 2007 by Søren Spelling Lund.
+    [KernelFunction("create_folder")]
+    public void CreateFolder(string folderPath)
+    {
+        Guard(folderPath);
+        Directory.CreateDirectory(folderPath);
+    }
 
-               As of 2024 it have over 1000 members
+    [KernelFunction("create_file")]
+    public void CreateFile(string filePath, string content)
+    {
+        Guard(filePath);
+        File.WriteAllText(filePath, content);
+    }
 
-               Today it have the following Core Members that are in charge of organizing events
-               - Kristoffer Strube
-               - Mogens Heller Grabe 
-               - Henrik Lykke Nielsen
-               - Michael Skarum
-               - Brian Holmgaard Kristensen
-               - Christian Horsdal
-               - Rasmus Wulff Jensen
-               """;
+    [KernelFunction("get_content_of_file")]
+    public string GetContentOfFile(string filePath)
+    {
+        Guard(filePath);
+        return File.ReadAllText(filePath);
+    }
+
+    [KernelFunction("move_file")]
+    public void MoveFile(string source_file_path, string target_file_path)
+    {
+        Guard(source_file_path);
+        Guard(target_file_path);
+        File.Move(source_file_path, target_file_path);
+    }
+
+    [KernelFunction("move_folder")]
+    public void MoveFolder(string source_folder_path, string target_folder_path)
+    {
+        Guard(source_folder_path);
+        Guard(target_folder_path);
+        Directory.Move(source_folder_path, target_folder_path);
+    }
+
+    [KernelFunction("get_files_for_folder")]
+    public string[] GetFiles(string folderPath)
+    {
+        Guard(folderPath);
+        return Directory.GetFiles(folderPath);
+    }
+
+    [KernelFunction("get_folders_for_folder")]
+    public string[] GetFolders(string folderPath)
+    {
+        Guard(folderPath);
+        return Directory.GetDirectories(folderPath);
+    }
+
+    private void Guard(string folderPath)
+    {
+        if (!folderPath.StartsWith(rootFolder))
+        {
+            throw new Exception("No you don't!");
+        }
     }
 }
