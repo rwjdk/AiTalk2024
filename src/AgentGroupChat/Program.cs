@@ -49,10 +49,19 @@ var groupChat = new AgentGroupChat(storyTeller, reviewer, censor)
         }
     },
 };
+
+Console.WriteLine("Meet our agents");
+Console.WriteLine("- John is our StoryTeller; he love telling stories about dragons... But it a bit edgy if people mess with his stories");
+Console.WriteLine("- Wayne is our Reviewer... When he does not surf 🏄 he rate dragon stories");
+Console.WriteLine("- Mr. Smith is a Censor... His biggest goal in life if to censor stories... Especially about dragons!");
+Console.WriteLine("Press any key to see how these three get along if you drop them into a group-chat...");
+Console.ReadKey();
+Console.Clear();
+
 Console.OutputEncoding = Encoding.UTF8;
-Console.Write("Question: ");
+Console.Write("What should the story be about (other than dragons of cause...): ");
 var question = Console.ReadLine() ?? "";
-groupChat.AddChatMessage(new ChatMessageContent(AuthorRole.User, question));
+groupChat.AddChatMessage(new ChatMessageContent(AuthorRole.User, "tell a story about: "+question));
 
 IAsyncEnumerable<StreamingChatMessageContent> response = groupChat.InvokeStreamingAsync();
 string speaker = string.Empty;
@@ -60,7 +69,13 @@ await foreach (var chunk in response)
 {
     if (speaker != chunk.AuthorName)
     {
-        Console.ReadKey();
+        if (!string.IsNullOrWhiteSpace(speaker))
+        {
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         Console.WriteLine();
         Console.WriteLine();
         Console.WriteLine("***");
