@@ -7,8 +7,6 @@ public record Secrets(
     string AzureOpenAiApiKey,
     string AzureSpeechApiKey,
     string CosmosDbConnectionString,
-    string TrelloApiKey,
-    string TrelloToken,
     string GoogleGeminiApiKey);
 
 public class SecretManager
@@ -25,8 +23,6 @@ public class SecretManager
             Configuration["AzureOpenAiKey"]!,
             Configuration["AzureSpeechKey"]!,
             Configuration["CosmosDbConnectionString"]!,
-            Configuration["TrelloApiKey"]!,
-            Configuration["TrelloToken"]!,
             Configuration["GoogleGeminiApiKey"]!
         );
     }

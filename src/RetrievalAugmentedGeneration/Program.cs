@@ -64,7 +64,7 @@ var history = new ChatHistory();
 Console.OutputEncoding = Encoding.UTF8;
 while (true)
 {
-    Console.Write("Question: ");
+    Console.Write("> ");
     var question = Console.ReadLine() ?? "";
 
     history.AddUserMessage(question);

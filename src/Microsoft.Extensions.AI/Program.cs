@@ -1,24 +1,34 @@
 ﻿using System.ClientModel;
+using System.ComponentModel;
 using System.Text;
 using Azure.AI.OpenAI;
 using Microsoft.Extensions.AI;
 using Shared;
 
 Secrets secrets = SecretManager.GetSecrets();
-
 AzureOpenAIClient azureOpenAiClient = new AzureOpenAIClient(
     new Uri(secrets.AzureOpenAiEndpoint),
     new ApiKeyCredential(secrets.AzureOpenAiApiKey));
 
-IChatClient client = azureOpenAiClient.AsChatClient(modelId: "gpt-4o-mini");
+[Description("Gets the current weather")]
+string GetCurrentWeather() => Random.Shared.NextDouble() > 0.5 ? "It's sunny" : "It's raining";
+
+IChatClient client = new ChatClientBuilder()
+    .UseFunctionInvocation()
+    .Use(azureOpenAiClient.AsChatClient(modelId: "gpt-4o-mini"));
+
 Console.OutputEncoding = Encoding.UTF8;
 while (true)
 {
-    Console.Write("Question: ");
+    Console.Write("> ");
     var question = Console.ReadLine() ?? "";
-    await foreach (var update in client.CompleteStreamingAsync(question))
+    var response = client.CompleteStreamingAsync(
+        question,
+        new() { Tools = [AIFunctionFactory.Create(GetCurrentWeather)] });
+
+    await foreach (var update in response)
     {
-        Console.Write(update.Text);
+        Console.Write(update);
     }
 
     Console.WriteLine();

@@ -24,7 +24,7 @@ Kernel kernel = builder.Build();
 
 //Step 4:
 /*
-Console.Write("Question: ");
+Console.Write("> ");
 var input = Console.ReadLine() ?? "";
 var result = await kernel.InvokePromptAsync(input);
 Console.WriteLine("Answer:");
@@ -49,7 +49,7 @@ var history = new ChatHistory();
 Console.OutputEncoding = Encoding.UTF8;
 while (true)
 {
-    Console.Write("Question: ");
+    Console.Write("> ");
     var question = Console.ReadLine() ?? "";
     history.AddUserMessage(question);
 
