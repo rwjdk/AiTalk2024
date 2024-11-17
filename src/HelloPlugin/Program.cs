@@ -55,14 +55,21 @@ while (true)
     var question = Console.ReadLine() ?? "";
     history.AddUserMessage(question);
 
-    await foreach (var response in agent.InvokeStreamingAsync(history))
+    try
     {
-        foreach (var content in response.Content ?? "")
+        await foreach (var response in agent.InvokeStreamingAsync(history))
         {
-            Console.Write(content);
+            foreach (var content in response.Content ?? "")
+            {
+                Console.Write(content);
+            }
         }
     }
-
+    catch (Exception e)
+    {
+        Console.WriteLine("Exception: " + e.Message);
+    }
+    
     Console.WriteLine();
     Console.WriteLine("*********************");
     Console.WriteLine();

@@ -30,7 +30,7 @@ ISemanticTextMemory semanticTextMemory = new MemoryBuilder()
     .Build();
 
 
-const bool importData = false;
+const bool importData = true;
 const string vectorStoreCollection = "relewise-docs";
 if (importData)
 {
