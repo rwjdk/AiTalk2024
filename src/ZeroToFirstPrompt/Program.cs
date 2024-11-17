@@ -14,6 +14,7 @@
 //- Deploy a Model via Azure Open AI Studio
 const string azureOpenAiEndpoint = "";
 const string azureOpenAiApiKey = ""; //Todo - Should not be directly in real code!!! 
+const string modelDeploymentName = "";
 
 #endregion
 

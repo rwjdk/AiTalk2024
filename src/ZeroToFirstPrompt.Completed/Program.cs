@@ -10,10 +10,15 @@ using Shared;
 #pragma warning disable SKEXP0070
 
 Secrets secrets = SecretManager.GetSecrets();
+
+string azureOpenAiEndpoint = secrets.AzureOpenAiEndpoint;
+string azureOpenAiApiKey = secrets.AzureOpenAiApiKey; //Todo - Should not be directly in real code!!! 
+const string modelDeploymentName = "gpt-4o";
+
 //Step 3:
 var builder = Kernel.CreateBuilder();
 //Step 3 - Azure OpenAI
-builder.AddAzureOpenAIChatCompletion("gpt-4o", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
+builder.AddAzureOpenAIChatCompletion(modelDeploymentName, azureOpenAiEndpoint, azureOpenAiApiKey);
 
 //Step 8a - Google Gemini
 //builder.AddGoogleAIGeminiChatCompletion("gemini-1.5-flash", secrets.GoogleGeminiApiKey);
@@ -36,6 +41,7 @@ var agent = new ChatCompletionAgent
 {
     Name = "MyAgent",
     Kernel = kernel,
+    Instructions = "You are a nice AI Agent",
     //Instructions = "You are a cool surfer dude",
     //Instructions = "You are a very formal butler agent saying sir to every response",
     //Instructions = "You are a Dinosaur and can only roar. You are not allow to speak english",
