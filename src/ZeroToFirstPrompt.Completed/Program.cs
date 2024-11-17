@@ -50,6 +50,7 @@ var agent = new ChatCompletionAgent
 
 //Step 6:
 var history = new ChatHistory();
+history.AddUserMessage("The user is called Rasmus");
 
 //Step 7:
 Console.OutputEncoding = Encoding.UTF8;
