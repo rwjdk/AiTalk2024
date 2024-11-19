@@ -20,16 +20,19 @@ using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 Secrets secrets = SecretManager.GetSecrets();
 var builder = Kernel.CreateBuilder();
 builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey); //Smaller model
+
+//NEW
 builder.AddAzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey); //New!
+
 Kernel kernel = builder.Build();
 
-
+//NEW
 ISemanticTextMemory semanticTextMemory = new MemoryBuilder()
     .WithTextEmbeddingGeneration(kernel.GetRequiredService<ITextEmbeddingGenerationService>())
     .WithMemoryStore(new AzureCosmosDBNoSQLMemoryStore(secrets.CosmosDbConnectionString, "relewise", 1536, VectorDataType.Float32, VectorIndexType.DiskANN))
     .Build();
 
-
+//NEW
 const bool importData = true;
 const string vectorStoreCollection = "relewise-docs";
 if (importData)
@@ -37,7 +40,8 @@ if (importData)
     await new RelewiseDocsImporter(vectorStoreCollection, semanticTextMemory).Import();
 }
 
-kernel.ImportPluginFromObject(new RelewiseDocsPlugin(semanticTextMemory, vectorStoreCollection)); //NEW <<<<<<<<<<<<<<<<<<<<<<<
+//NEW
+kernel.ImportPluginFromObject(new RelewiseDocsPlugin(semanticTextMemory, vectorStoreCollection));
 
 var agent = new ChatCompletionAgent
 {
@@ -49,12 +53,14 @@ var agent = new ChatCompletionAgent
                    Please only answer questions about Relewise. If you are ask about anything else please say 'I can only answer questions about Relewise' and if you do not know answer 'I do not know 😔'
                    """,
     Kernel = kernel,
-    HistoryReducer = new ChatHistoryTruncationReducer(1), //NEW <<<<<<<<<<<<<<<<<<<<<<<
+
+    //NEW
+    HistoryReducer = new ChatHistoryTruncationReducer(1),
     Arguments = new KernelArguments
     (
         new AzureOpenAIPromptExecutionSettings
         {
-            FunctionChoiceBehavior = FunctionChoiceBehavior.Auto() //NEW <<<<<<<<<<<<<<<<<<<<<<<
+            FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
         }
     )
 };
@@ -77,8 +83,10 @@ while (true)
         }
     }
 
-    history.RemoveToolCalls(); //NEW <<<<<<<<<<<<<<<<<<<<<<<
-    await agent.ReduceAsync(history); //NEW <<<<<<<<<<<<<<<<<<<<<<<
+    //NEW
+    history.RemoveToolCalls();
+    await agent.ReduceAsync(history);
+
     Console.WriteLine();
     Console.WriteLine("*********************");
     Console.WriteLine();

@@ -1,6 +1,4 @@
-﻿Console.WriteLine("Zero to First Prompt (and beyond)");
-
-#region Step 1
+﻿#region Step 1
 
 //Install Nuget: Microsoft.SemanticKernel
 
