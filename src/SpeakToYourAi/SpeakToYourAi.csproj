@@ -13,6 +13,7 @@
 		<PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.28.0-alpha" />
 		<PackageReference Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.28.0-alpha" />
 		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.41.1" />
+		<PackageReference Include="NAudio" Version="2.2.1" />
 	</ItemGroup>
 
 	<ItemGroup>

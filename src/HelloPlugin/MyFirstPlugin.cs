@@ -1,14 +1,24 @@
 ﻿using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace HelloPlugin;
 
-public class MyFirstPlugin(string rootFolder, ChatHistory history)
+public class MyFirstPlugin
 {
+    public string RootFolder { get; set; }
+
+    public MyFirstPlugin()
+    {
+        RootFolder = "C:\\HelloPlugin";
+        if (!Directory.Exists(RootFolder))
+        {
+            Directory.CreateDirectory(RootFolder);
+        }
+    }
+
     [KernelFunction("get_root_folder")]
     public string GetRootFolder()
     {
-        return rootFolder;
+        return RootFolder;
     }
 
     [KernelFunction("create_folder")]
@@ -64,21 +74,9 @@ public class MyFirstPlugin(string rootFolder, ChatHistory history)
 
     private void Guard(string folderPath)
     {
-        if (!folderPath.StartsWith(rootFolder))
+        if (!folderPath.StartsWith(RootFolder))
         {
             throw new Exception("No you don't!");
         }
-    }
-
-    [KernelFunction("forget_history")]
-    public void Forget()
-    {
-        history.Clear();
-    }
-
-    [KernelFunction("start_over")]
-    public void Forget2()
-    {
-        history.Clear();
     }
 }

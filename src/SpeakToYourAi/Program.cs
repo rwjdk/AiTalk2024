@@ -6,6 +6,10 @@ using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using Shared;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.SemanticKernel.AudioToText;
+using NAudio.Wave;
+using System;
 
 #pragma warning disable SKEXP0001
 #pragma warning disable SKEXP0010
@@ -15,6 +19,8 @@ using Shared;
 Secrets secrets = SecretManager.GetSecrets();
 var builder = Kernel.CreateBuilder();
 builder.AddAzureOpenAIChatCompletion("gpt-4o", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
+builder.AddAzureOpenAIAudioToText("whisper", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
+
 Kernel kernel = builder.Build();
 
 var agent = new ChatCompletionAgent
@@ -32,18 +38,36 @@ var agent = new ChatCompletionAgent
 var history = new ChatHistory();
 Console.OutputEncoding = Encoding.UTF8;
 
-var speechConfig = SpeechConfig.FromSubscription(secrets.AzureSpeechApiKey, "swedencentral");
 while (true)
 {
-    Console.WriteLine("Press any key to ask you question...");
+    Console.WriteLine("Press any key to start recording mode...");
     Console.ReadKey();
-    Console.WriteLine("Listening for your question...");
+    Console.WriteLine("Listening for your question... Press any key to stop.");
+    var waveFormat = new WaveFormat(44100, 1);
+    MemoryStream stream = new MemoryStream();
+    await using (var waveStream = new WaveFileWriter(stream, waveFormat))
+    {
+        using (var waveIn = new WaveInEvent())
+        {
+            waveIn.WaveFormat = waveFormat;
 
-    speechConfig.SpeechRecognitionLanguage = "da-DK";
-    var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
-    var speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
-    SpeechRecognitionResult result = await speechRecognizer.RecognizeOnceAsync();
-    var question = result.Text;
+            waveIn.DataAvailable += (_, eventArgs) =>
+            {
+                // ReSharper disable once AccessToDisposedClosure
+                waveStream.Write(eventArgs.Buffer, 0, eventArgs.BytesRecorded);
+            };
+
+            waveIn.StartRecording();
+            Console.ReadKey();
+        }
+    }
+
+    IAudioToTextService audioService = kernel.GetRequiredService<IAudioToTextService>();
+
+    byte[] audioBytes = stream.ToArray();
+    var audioContent = new AudioContent(audioBytes.AsMemory(), "audio/wav");
+    TextContent questionAsText = await audioService.GetTextContentAsync(audioContent);
+    var question = questionAsText.Text!;
     Console.WriteLine("Question: " + question);
     if (string.IsNullOrWhiteSpace(question))
     {

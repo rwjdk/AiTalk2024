@@ -2,15 +2,26 @@
 
 namespace Shared;
 
+
+
 public record Secrets(
     string AzureOpenAiEndpoint,
     string AzureOpenAiApiKey,
-    string AzureSpeechApiKey,
     string CosmosDbConnectionString,
     string GoogleGeminiApiKey);
 
 public class SecretManager
 {
+    //Right-click the Shared Project and choose "Manage User Secrets". Then provide the following:
+    /*
+    {
+      "AzureOpenAiEndpoint": "todo",
+      "AzureOpenAiKey": "todo",
+      "CosmosDbConnectionString": "todo",
+      "GoogleGeminiApiKey": "todo"
+    }
+    */
+
     private static readonly IConfigurationRoot Configuration =
         new ConfigurationBuilder()
             .AddUserSecrets<SecretManager>()
@@ -21,7 +32,6 @@ public class SecretManager
         return new Secrets(
             Configuration["AzureOpenAiEndpoint"]!,
             Configuration["AzureOpenAiKey"]!,
-            Configuration["AzureSpeechKey"]!,
             Configuration["CosmosDbConnectionString"]!,
             Configuration["GoogleGeminiApiKey"]!
         );
