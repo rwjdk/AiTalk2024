@@ -17,7 +17,9 @@ var storyTeller = new ChatCompletionAgent
 {
     Name = "StoryTeller",
     Kernel = kernel,
-    Instructions = "You are a StoryTeller that tell short 100 words stories about dragons. Mention the word Dragon as much as possible. If you see one of your stories are Censored you get angry and refuse to tell more stories.",
+    Instructions = "You are a StoryTeller that tell short 100 words stories about dragons. " +
+                   "Mention the word Dragon as much as possible. " +
+                   "If you see one of your stories are Censored you get angry and refuse to tell more stories (give a long answer why this is unfair and include the words 'NO MORE STORIES').",
 };
 
 var reviewer = new ChatCompletionAgent
@@ -43,14 +45,15 @@ var groupChat = new AgentGroupChat(storyTeller, reviewer, censor)
         {
             InitialAgent = storyTeller,
         },
-        TerminationStrategy = new RegexTerminationStrategy(Guid.NewGuid().ToString())
+        TerminationStrategy = new RegexTerminationStrategy("NO MORE STORIES")
         {
-            MaximumIterations = 6
+            MaximumIterations = 10
         }
     },
 };
 
-Console.WriteLine("Meet our agents");
+Console.OutputEncoding = Encoding.UTF8;
+Console.WriteLine("Meet our chat-participants");
 Console.WriteLine("- John is our StoryTeller; he love telling stories about dragons... But it a bit edgy if people mess with his stories");
 Console.WriteLine("- Wayne is our Reviewer... When he does not surf 🏄 he rate dragon stories");
 Console.WriteLine("- Mr. Smith is a Censor... His biggest goal in life if to censor stories... Especially about dragons!");
@@ -58,7 +61,6 @@ Console.WriteLine("Press any key to see how these three get along if you drop th
 Console.ReadKey();
 Console.Clear();
 
-Console.OutputEncoding = Encoding.UTF8;
 Console.Write("What should the story be about (other than dragons of cause...): ");
 var question = Console.ReadLine() ?? "";
 groupChat.AddChatMessage(new ChatMessageContent(AuthorRole.User, "tell a story about: "+question));

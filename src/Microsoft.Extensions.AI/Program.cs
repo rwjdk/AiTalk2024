@@ -10,9 +10,6 @@ AzureOpenAIClient azureOpenAiClient = new AzureOpenAIClient(
     new Uri(secrets.AzureOpenAiEndpoint),
     new ApiKeyCredential(secrets.AzureOpenAiApiKey));
 
-[Description("Gets the current weather")]
-string GetCurrentWeather() => Random.Shared.NextDouble() > 0.5 ? "It's sunny" : "It's raining";
-
 IChatClient client = new ChatClientBuilder()
     .UseFunctionInvocation()
     .Use(azureOpenAiClient.AsChatClient(modelId: "gpt-4o-mini"));
@@ -35,3 +32,6 @@ while (true)
     Console.WriteLine("*********************");
     Console.WriteLine();
 }
+
+[Description("Gets the current weather")]
+string GetCurrentWeather() => Random.Shared.NextDouble() > 0.5 ? "It's sunny" : "It's raining";

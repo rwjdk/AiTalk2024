@@ -4,28 +4,21 @@ namespace HelloPlugin;
 
 public class MyFirstPlugin
 {
-    private readonly string _rootFolder;
+    public string RootFolder { get; set; }
 
     public MyFirstPlugin()
     {
-        _rootFolder = "C:\\HelloPlugin";
-        if (!Directory.Exists(_rootFolder))
+        RootFolder = "C:\\HelloPlugin";
+        if (!Directory.Exists(RootFolder))
         {
-            Directory.CreateDirectory(_rootFolder);
+            Directory.CreateDirectory(RootFolder);
         }
-    }
-
-    [KernelFunction("get_number_of_files")]
-    public int GetNumberOfFiles()
-    {
-        var rootFolder = GetRootFolder();
-        return Directory.GetFiles(rootFolder, "*.*", SearchOption.AllDirectories).Length;
     }
 
     [KernelFunction("get_root_folder")]
     public string GetRootFolder()
     {
-        return _rootFolder;
+        return RootFolder;
     }
 
     [KernelFunction("create_folder")]
@@ -81,7 +74,7 @@ public class MyFirstPlugin
 
     private void Guard(string folderPath)
     {
-        if (!folderPath.StartsWith(_rootFolder))
+        if (!folderPath.StartsWith(RootFolder))
         {
             throw new Exception("No you don't!");
         }

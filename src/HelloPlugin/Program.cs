@@ -14,12 +14,16 @@ using Shared;
 
 Secrets secrets = SecretManager.GetSecrets();
 var builder = Kernel.CreateBuilder();
-builder.Services.AddSingleton<IAutoFunctionInvocationFilter, AutoInvocationFilter>();
 builder.AddAzureOpenAIChatCompletion("gpt-4o-mini", secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiApiKey);
+
+//NEW (Optional)
+builder.Services.AddSingleton<IAutoFunctionInvocationFilter, AutoInvocationFilter>();
+
 Kernel kernel = builder.Build();
 
 var history = new ChatHistory();
 
+//NEW (NUGET: Microsoft.SemanticKernel.Agents.Core)
 kernel.ImportPluginFromType<TimePlugin>();
 
 var myFirstPlugin = new MyFirstPlugin();
@@ -31,7 +35,9 @@ var agent = new ChatCompletionAgent
     Kernel = kernel,
     Instructions = $"You are File Manager that can create and list files and folders. " +
                    $"When you create files and folder you need to give the full path based" +
-                   $" on this root folder: {myFirstPlugin.GetRootFolder()}",
+                   $" on this root folder: {myFirstPlugin.RootFolder}",
+
+    //NEW
     Arguments = new KernelArguments(
         new AzureOpenAIPromptExecutionSettings
         {
@@ -40,7 +46,6 @@ var agent = new ChatCompletionAgent
         })
 };
 
-
 Console.OutputEncoding = Encoding.UTF8;
 while (true)
 {
@@ -48,14 +53,21 @@ while (true)
     var question = Console.ReadLine() ?? "";
     history.AddUserMessage(question);
 
-    await foreach (var response in agent.InvokeStreamingAsync(history))
+    try
     {
-        foreach (var content in response.Content ?? "")
+        await foreach (var response in agent.InvokeStreamingAsync(history))
         {
-            Console.Write(content);
+            foreach (var content in response.Content ?? "")
+            {
+                Console.Write(content);
+            }
         }
     }
-
+    catch (Exception e)
+    {
+        Console.WriteLine("Exception: " + e.Message);
+    }
+    
     Console.WriteLine();
     Console.WriteLine("*********************");
     Console.WriteLine();
