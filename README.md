@@ -1,3 +1,6 @@
+> [!WARNING]
+> As AI is an ever-evolving tech, most of this repo's samples are outdated. To get up-to-date examples of the various concepts, see my [AI Samples Repo](https://github.com/rwjdk/AiSamples)
+
 # AI Talk - 19th of November 2024
 
 [Link to Slides](https://1drv.ms/p/s!AkItAZiaMtwzkLQYEc9BPDvS7wgk6g?e=Qp8RPS)
